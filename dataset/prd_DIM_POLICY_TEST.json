@@ -1,0 +1,814 @@
+{
+	"name": "prd_DIM_POLICY_TEST",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlMI_PRD",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlMITable",
+		"schema": [
+			{
+				"name": "POLICY_SID",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 0
+			},
+			{
+				"name": "POLICY_NBR",
+				"type": "varchar"
+			},
+			{
+				"name": "TRAN_NBR",
+				"type": "decimal",
+				"precision": 5,
+				"scale": 0
+			},
+			{
+				"name": "REN_CNT",
+				"type": "decimal",
+				"precision": 5,
+				"scale": 0
+			},
+			{
+				"name": "END_CNT",
+				"type": "decimal",
+				"precision": 5,
+				"scale": 0
+			},
+			{
+				"name": "POLICYNBR_RENEW",
+				"type": "varchar"
+			},
+			{
+				"name": "POLICY_COUNT_FLAG",
+				"type": "varchar"
+			},
+			{
+				"name": "UW_DATE",
+				"type": "date"
+			},
+			{
+				"name": "CANCEL_IND",
+				"type": "decimal",
+				"precision": 5,
+				"scale": 0
+			},
+			{
+				"name": "POLICY_COUNT",
+				"type": "decimal",
+				"precision": 5,
+				"scale": 0
+			},
+			{
+				"name": "BATCHTCDE",
+				"type": "varchar"
+			},
+			{
+				"name": "BATCHTCDE_DESC",
+				"type": "varchar"
+			},
+			{
+				"name": "POLICY_TYPE",
+				"type": "varchar"
+			},
+			{
+				"name": "ORIG_INCEPT_DATE",
+				"type": "date"
+			},
+			{
+				"name": "EFFECTIVE_DATE",
+				"type": "date"
+			},
+			{
+				"name": "EXPIRY_DATE",
+				"type": "date"
+			},
+			{
+				"name": "TERM_DATE",
+				"type": "date"
+			},
+			{
+				"name": "POLICY_STATUS_CODE",
+				"type": "varchar"
+			},
+			{
+				"name": "POLICY_STATUS",
+				"type": "varchar"
+			},
+			{
+				"name": "END_REASON_CODE",
+				"type": "varchar"
+			},
+			{
+				"name": "END_REASON_DESC",
+				"type": "varchar"
+			},
+			{
+				"name": "BULK_BOOK_IND",
+				"type": "varchar"
+			},
+			{
+				"name": "RENEWAL_NBR",
+				"type": "decimal",
+				"precision": 5,
+				"scale": 0
+			},
+			{
+				"name": "END_TYPE",
+				"type": "varchar"
+			},
+			{
+				"name": "INT_END_NBR",
+				"type": "varchar"
+			},
+			{
+				"name": "END_NBR",
+				"type": "varchar"
+			},
+			{
+				"name": "DECLARE_DATE",
+				"type": "date"
+			},
+			{
+				"name": "DECLARE_TIME",
+				"type": "varchar"
+			},
+			{
+				"name": "ENTRY_DATE",
+				"type": "date"
+			},
+			{
+				"name": "ENTRY_TIME",
+				"type": "varchar"
+			},
+			{
+				"name": "AGT_COM_TYPE",
+				"type": "varchar"
+			},
+			{
+				"name": "AGT_COM_TYPE_DESC",
+				"type": "varchar"
+			},
+			{
+				"name": "VAT_METHOD",
+				"type": "varchar"
+			},
+			{
+				"name": "VAT_METHOD_DESC",
+				"type": "varchar"
+			},
+			{
+				"name": "PAY_PLAN",
+				"type": "varchar"
+			},
+			{
+				"name": "PAY_PLAN_DESC",
+				"type": "varchar"
+			},
+			{
+				"name": "PAY_MODE",
+				"type": "varchar"
+			},
+			{
+				"name": "PAY_MODE_DESC",
+				"type": "varchar"
+			},
+			{
+				"name": "MASTER_POLICY",
+				"type": "varchar"
+			},
+			{
+				"name": "REPLACE_NBR",
+				"type": "varchar"
+			},
+			{
+				"name": "REPLACE_TYPE",
+				"type": "varchar"
+			},
+			{
+				"name": "REPLACE_TYPE_DESC",
+				"type": "varchar"
+			},
+			{
+				"name": "REPLACE_POLICY",
+				"type": "varchar"
+			},
+			{
+				"name": "NOTICES_TO",
+				"type": "varchar"
+			},
+			{
+				"name": "NOTICES_TO_DESC",
+				"type": "varchar"
+			},
+			{
+				"name": "RENEWAL_TYPE",
+				"type": "varchar"
+			},
+			{
+				"name": "RENEWAL_NAME",
+				"type": "varchar"
+			},
+			{
+				"name": "RENEWAL_NOTICE",
+				"type": "varchar"
+			},
+			{
+				"name": "RENEWAL_NOTICE_DESC",
+				"type": "varchar"
+			},
+			{
+				"name": "CAMPAIGN",
+				"type": "varchar"
+			},
+			{
+				"name": "CAMPAIGN_DESC",
+				"type": "varchar"
+			},
+			{
+				"name": "CAMPAIGN_RATE",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 9
+			},
+			{
+				"name": "NBR_FREE_INSTALL",
+				"type": "decimal",
+				"precision": 9,
+				"scale": 0
+			},
+			{
+				"name": "COVERAGE_PERIOD",
+				"type": "decimal",
+				"precision": 5,
+				"scale": 0
+			},
+			{
+				"name": "RENEWAL_ATTN",
+				"type": "varchar"
+			},
+			{
+				"name": "RENEWAL_ATTN_DESC",
+				"type": "varchar"
+			},
+			{
+				"name": "JACKET",
+				"type": "varchar"
+			},
+			{
+				"name": "JACKET_NAME",
+				"type": "varchar"
+			},
+			{
+				"name": "TERRITORY_CODE",
+				"type": "varchar"
+			},
+			{
+				"name": "TERRITORY_NAME",
+				"type": "varchar"
+			},
+			{
+				"name": "PIC_ID",
+				"type": "varchar"
+			},
+			{
+				"name": "PIC_NAME",
+				"type": "varchar"
+			},
+			{
+				"name": "JCS_ID",
+				"type": "varchar"
+			},
+			{
+				"name": "JCS_NAME",
+				"type": "varchar"
+			},
+			{
+				"name": "TA_ID",
+				"type": "varchar"
+			},
+			{
+				"name": "TA_NAME",
+				"type": "varchar"
+			},
+			{
+				"name": "BUSINESS_TYPE",
+				"type": "varchar"
+			},
+			{
+				"name": "BUSINESS_TYPE_DESC",
+				"type": "varchar"
+			},
+			{
+				"name": "COUNTRY_CODE",
+				"type": "varchar"
+			},
+			{
+				"name": "COUNTRY_NAME",
+				"type": "varchar"
+			},
+			{
+				"name": "BUSINESS_ORIGIN",
+				"type": "varchar"
+			},
+			{
+				"name": "BUSINESS_ORIGIN_DESC",
+				"type": "varchar"
+			},
+			{
+				"name": "MARKETING",
+				"type": "varchar"
+			},
+			{
+				"name": "MARKETING_DESC",
+				"type": "varchar"
+			},
+			{
+				"name": "TEMPLATE_CODE",
+				"type": "varchar"
+			},
+			{
+				"name": "CEDE_COY",
+				"type": "varchar"
+			},
+			{
+				"name": "CEDE_INSURED",
+				"type": "varchar"
+			},
+			{
+				"name": "CEDE_POLICY_NBR",
+				"type": "varchar"
+			},
+			{
+				"name": "CEDE_CESS_NBR",
+				"type": "varchar"
+			},
+			{
+				"name": "CEDE_RI_COMMS",
+				"type": "decimal",
+				"precision": 22,
+				"scale": 2
+			},
+			{
+				"name": "CEDE_SI_CURR",
+				"type": "varchar"
+			},
+			{
+				"name": "CEDE_CURR_RATE",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 9
+			},
+			{
+				"name": "CEDE_FR_PERIOD",
+				"type": "date"
+			},
+			{
+				"name": "CEDE_TO_PERIOD",
+				"type": "date"
+			},
+			{
+				"name": "CEDE_ORIG_SI",
+				"type": "decimal",
+				"precision": 22,
+				"scale": 2
+			},
+			{
+				"name": "CEDE_ORIG_ANNL_PREM",
+				"type": "decimal",
+				"precision": 22,
+				"scale": 2
+			},
+			{
+				"name": "CEDE_ORIG_GROSS_PREM",
+				"type": "decimal",
+				"precision": 22,
+				"scale": 2
+			},
+			{
+				"name": "CEDE_OUR_SHARE",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 9
+			},
+			{
+				"name": "CEDE_AMT_REINSURED",
+				"type": "decimal",
+				"precision": 22,
+				"scale": 2
+			},
+			{
+				"name": "TRAVEL_END_TIME",
+				"type": "varchar"
+			},
+			{
+				"name": "EXCHANGE_RATE",
+				"type": "varchar"
+			},
+			{
+				"name": "DISTRICT_CODE",
+				"type": "varchar"
+			},
+			{
+				"name": "DISTRICT_DESC",
+				"type": "varchar"
+			},
+			{
+				"name": "FIRE_FLAG",
+				"type": "varchar"
+			},
+			{
+				"name": "POL_ISSUE_DATE",
+				"type": "date"
+			},
+			{
+				"name": "PROFIT_CENTRE_CODE",
+				"type": "varchar"
+			},
+			{
+				"name": "PROFIT_CENTRE_NAME",
+				"type": "varchar"
+			},
+			{
+				"name": "EXTRA_TEXT",
+				"type": "varchar"
+			},
+			{
+				"name": "SPECIAL_COND_1",
+				"type": "varchar"
+			},
+			{
+				"name": "SPECIAL_COND_2",
+				"type": "varchar"
+			},
+			{
+				"name": "SPECIAL_COND_3",
+				"type": "varchar"
+			},
+			{
+				"name": "SPECIAL_COND_4",
+				"type": "varchar"
+			},
+			{
+				"name": "SPECIAL_COND_5",
+				"type": "varchar"
+			},
+			{
+				"name": "INQ_KEY_1",
+				"type": "varchar"
+			},
+			{
+				"name": "INQ_KEY_2",
+				"type": "varchar"
+			},
+			{
+				"name": "INQ_KEY_3",
+				"type": "varchar"
+			},
+			{
+				"name": "GENERAL_LINE_1",
+				"type": "varchar"
+			},
+			{
+				"name": "GENERAL_LINE_2",
+				"type": "varchar"
+			},
+			{
+				"name": "FINANCE_ID",
+				"type": "varchar"
+			},
+			{
+				"name": "FINANCE_NAME",
+				"type": "varchar"
+			},
+			{
+				"name": "DEALER_ID",
+				"type": "varchar"
+			},
+			{
+				"name": "DEALER_NAME",
+				"type": "varchar"
+			},
+			{
+				"name": "DEALER_SHOWROOM_CODE",
+				"type": "varchar"
+			},
+			{
+				"name": "SALE_PERSON_ID",
+				"type": "varchar"
+			},
+			{
+				"name": "SALE_PERSON_NAME",
+				"type": "varchar"
+			},
+			{
+				"name": "NOTE_TYPE_DESC",
+				"type": "varchar"
+			},
+			{
+				"name": "BRANCH_SID",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 0
+			},
+			{
+				"name": "CO_PCT",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 9
+			},
+			{
+				"name": "OUR_SHARE",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 9
+			},
+			{
+				"name": "OUR_COIN_TYPE",
+				"type": "varchar"
+			},
+			{
+				"name": "AGENT_SID",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 0
+			},
+			{
+				"name": "AGENT_NBR",
+				"type": "varchar"
+			},
+			{
+				"name": "AGENT_NAME",
+				"type": "varchar"
+			},
+			{
+				"name": "CLIENT_SID",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 0
+			},
+			{
+				"name": "CLIENT_ID",
+				"type": "varchar"
+			},
+			{
+				"name": "CLIENT_NAME",
+				"type": "varchar"
+			},
+			{
+				"name": "PS_CLIENT_NAME_MAIL",
+				"type": "varchar"
+			},
+			{
+				"name": "PS_CLIENT_ADDR1",
+				"type": "varchar"
+			},
+			{
+				"name": "PS_CLIENT_ADDR2",
+				"type": "varchar"
+			},
+			{
+				"name": "PS_CLIENT_ADDR3",
+				"type": "varchar"
+			},
+			{
+				"name": "PS_CLIENT_ADDR4",
+				"type": "varchar"
+			},
+			{
+				"name": "PS_CLIENT_UNIT_NBR",
+				"type": "varchar"
+			},
+			{
+				"name": "PS_CLIENT_ROOM_NBR",
+				"type": "varchar"
+			},
+			{
+				"name": "PS_CLIENT_BUILDING",
+				"type": "varchar"
+			},
+			{
+				"name": "PS_CLIENT_VILLAGE",
+				"type": "varchar"
+			},
+			{
+				"name": "PS_CLIENT_ALLEY",
+				"type": "varchar"
+			},
+			{
+				"name": "PS_CLIENT_LANE",
+				"type": "varchar"
+			},
+			{
+				"name": "PS_CLIENT_STREET",
+				"type": "varchar"
+			},
+			{
+				"name": "PS_CLIENT_SUB_DISTRICT",
+				"type": "varchar"
+			},
+			{
+				"name": "PS_CLIENT_DISTRICT_CODE",
+				"type": "varchar"
+			},
+			{
+				"name": "PS_CLIENT_DISTRICT_DESC",
+				"type": "varchar"
+			},
+			{
+				"name": "PS_CLIENT_PROVINCE",
+				"type": "varchar"
+			},
+			{
+				"name": "PS_CLIENT_POST_CODE",
+				"type": "varchar"
+			},
+			{
+				"name": "PS_CLIENT_COUNTRY_CODE",
+				"type": "varchar"
+			},
+			{
+				"name": "REF_LINE_1",
+				"type": "varchar"
+			},
+			{
+				"name": "REF_LINE_2",
+				"type": "varchar"
+			},
+			{
+				"name": "USER_ID",
+				"type": "varchar"
+			},
+			{
+				"name": "RECEIPT_DATE",
+				"type": "date"
+			},
+			{
+				"name": "PAYER",
+				"type": "varchar"
+			},
+			{
+				"name": "PAYER_NAME",
+				"type": "varchar"
+			},
+			{
+				"name": "LAST_TRAN_NBR",
+				"type": "decimal",
+				"precision": 5,
+				"scale": 0
+			},
+			{
+				"name": "RENEWAL_STATUS",
+				"type": "varchar"
+			},
+			{
+				"name": "RENEWAL_DATE",
+				"type": "date"
+			},
+			{
+				"name": "NEXT_POLICYNBR_RENEW",
+				"type": "varchar"
+			},
+			{
+				"name": "NEXT_UW_DATE",
+				"type": "date"
+			},
+			{
+				"name": "DIFF_UW_EXP_DATE",
+				"type": "decimal",
+				"precision": 5,
+				"scale": 0
+			},
+			{
+				"name": "BDE_IND",
+				"type": "varchar"
+			},
+			{
+				"name": "DR_CR_IND",
+				"type": "bit"
+			},
+			{
+				"name": "PRINT_VAT",
+				"type": "varchar"
+			},
+			{
+				"name": "IMP_EXP_CODE",
+				"type": "varchar"
+			},
+			{
+				"name": "PRODUCT_CODE",
+				"type": "varchar"
+			},
+			{
+				"name": "PRODUCT_NAME",
+				"type": "varchar"
+			},
+			{
+				"name": "PROMOTION",
+				"type": "varchar"
+			},
+			{
+				"name": "SCHEDULE_PRINT_IND",
+				"type": "bit"
+			},
+			{
+				"name": "APPEND_NBR",
+				"type": "varchar"
+			},
+			{
+				"name": "CREDIT_NOTE_NBR",
+				"type": "varchar"
+			},
+			{
+				"name": "AC_DATE",
+				"type": "date"
+			},
+			{
+				"name": "ISSUE_DATE",
+				"type": "date"
+			},
+			{
+				"name": "STAFF_CODE",
+				"type": "varchar"
+			},
+			{
+				"name": "MAJOR_CLS",
+				"type": "varchar"
+			},
+			{
+				"name": "CONTRACT_TYPE",
+				"type": "varchar"
+			},
+			{
+				"name": "SOURCE_TYPE",
+				"type": "varchar"
+			},
+			{
+				"name": "UPDATED_DATE",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "DRT_IND",
+				"type": "varchar"
+			},
+			{
+				"name": "DRT_DATE",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "ORA_POLICY_SID",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 0
+			},
+			{
+				"name": "ORA_BRANCH_SID",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 0
+			},
+			{
+				"name": "ORA_AGENT_SID",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 0
+			},
+			{
+				"name": "ORA_CLIENT_SID",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 0
+			},
+			{
+				"name": "PRODUCER_SID",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 0
+			},
+			{
+				"name": "PRODUCER_NBR",
+				"type": "varchar"
+			},
+			{
+				"name": "PRODUCER_NAME",
+				"type": "varchar"
+			},
+			{
+				"name": "ORA_PRODUCER_SID",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 0
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "DIM_POLICY_TEST"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

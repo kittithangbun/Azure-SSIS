@@ -1,0 +1,41 @@
+{
+	"name": "EDW-DEV-ADF01-IR01",
+	"properties": {
+		"type": "Managed",
+		"description": "Development Integration Runtime",
+		"typeProperties": {
+			"computeProperties": {
+				"location": "Southeast Asia",
+				"nodeSize": "Standard_D2_v3",
+				"numberOfNodes": 1,
+				"maxParallelExecutionsPerNode": 4,
+				"vNetProperties": {
+					"subnetId": "/subscriptions/8b498de2-d497-4363-955f-1300adb88c7a/resourceGroups/RG-EDW-DEV/providers/Microsoft.Network/virtualNetworks/TMSTH-DEV01/subnets/EDW-DEV-SNET_10_65_8"
+				}
+			},
+			"ssisProperties": {
+				"catalogInfo": {
+					"catalogServerEndpoint": "edw-dev-asqlmi01.acb75c1878f6.database.windows.net",
+					"catalogAdminUserName": "sqlmiadmin",
+					"catalogAdminPassword": {
+						"type": "SecureString",
+						"value": "**********"
+					},
+					"catalogPricingTier": null
+				},
+				"edition": "Standard",
+				"licenseType": "BasePrice",
+				"dataProxyProperties": {
+					"connectVia": {
+						"type": "IntegrationRuntimeReference",
+						"referenceName": "EDW-DEV-ADF01-SH01"
+					},
+					"stagingLinkedService": {
+						"type": "LinkedServiceReference",
+						"referenceName": "DevAzureBlobStorage"
+					}
+				}
+			}
+		}
+	}
+}

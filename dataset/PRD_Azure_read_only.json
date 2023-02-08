@@ -1,0 +1,13 @@
+{
+	"name": "PRD_Azure_read_only",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PRD_AzureMI_gia_ro",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlMITable",
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

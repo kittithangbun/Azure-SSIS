@@ -1,0 +1,27 @@
+{
+	"name": "TM_CSV01",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "TM_Dev_blob_gains",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "claim.csv",
+				"folderPath": "test",
+				"container": "gains-project-container"
+			},
+			"columnDelimiter": ",",
+			"encodingName": "WINDOWS-874",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"nullValue": "-",
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

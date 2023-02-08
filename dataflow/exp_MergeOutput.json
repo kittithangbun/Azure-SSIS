@@ -1,0 +1,109 @@
+{
+	"name": "exp_MergeOutput",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"linkedService": {
+						"referenceName": "TM_Dev_blob_gains",
+						"type": "LinkedServiceReference"
+					},
+					"name": "SrcGwp"
+				},
+				{
+					"linkedService": {
+						"referenceName": "TM_Dev_blob_gains",
+						"type": "LinkedServiceReference"
+					},
+					"name": "SrcClaim"
+				}
+			],
+			"sinks": [
+				{
+					"linkedService": {
+						"referenceName": "TM_Dev_blob_gains",
+						"type": "LinkedServiceReference"
+					},
+					"name": "CsvOut"
+				}
+			],
+			"transformations": [
+				{
+					"name": "union1"
+				},
+				{
+					"name": "aggregate1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          SOURCE_TYPE as string,",
+				"          CLIENT_TYPE as string,",
+				"          CONTRACT_TYPE as string,",
+				"          ct_rpt_grp1 as string,",
+				"          gross_written_prem as double,",
+				"          pol_count as integer",
+				"     ),",
+				"     useSchema: false,",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     format: 'delimited',",
+				"     container: 'gains-project-container',",
+				"     folderPath: 'test',",
+				"     fileName: 'ClientGWP1',",
+				"     columnDelimiter: '|',",
+				"     escapeChar: '\\\\',",
+				"     quoteChar: '\\\"',",
+				"     encodingName: 'WINDOWS-874',",
+				"     columnNamesAsHeader: true) ~> SrcGwp",
+				"source(output(",
+				"          SOURCE_TYPE as string,",
+				"          CLIENT_TYPE as string,",
+				"          CONTRACT_TYPE as string,",
+				"          ct_rpt_grp1 as string,",
+				"          claim_paid as decimal(12,2),",
+				"          claim_count as integer",
+				"     ),",
+				"     useSchema: false,",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     format: 'delimited',",
+				"     container: 'gains-project-container',",
+				"     folderPath: 'test',",
+				"     fileName: 'ClientClaim1',",
+				"     columnDelimiter: '|',",
+				"     escapeChar: '\\\\',",
+				"     quoteChar: '\\\"',",
+				"     encodingName: 'WINDOWS-874',",
+				"     columnNamesAsHeader: true) ~> SrcClaim",
+				"SrcGwp, SrcClaim union(byName: true)~> union1",
+				"union1 aggregate(groupBy(SOURCE_TYPE,",
+				"          CLIENT_TYPE,",
+				"          CONTRACT_TYPE,",
+				"          ct_rpt_grp1),",
+				"     gross_written_prem = sum(gross_written_prem),",
+				"          pol_count = sum(pol_count),",
+				"          claim_paid = sum(claim_paid),",
+				"          claim_count = sum(claim_count),",
+				"     partitionBy('hash', 1)) ~> aggregate1",
+				"aggregate1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'delimited',",
+				"     container: 'gains-project-container',",
+				"     folderPath: 'test',",
+				"     columnDelimiter: '|',",
+				"     escapeChar: '\\\\',",
+				"     quoteChar: '\\\"',",
+				"     encodingName: 'WINDOWS-874',",
+				"     columnNamesAsHeader: true,",
+				"     filePattern:'ClientAll[n]',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> CsvOut"
+			]
+		}
+	}
+}

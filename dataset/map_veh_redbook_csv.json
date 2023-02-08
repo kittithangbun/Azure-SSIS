@@ -1,0 +1,262 @@
+{
+	"name": "map_veh_redbook_csv",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "TM_Dev_blob_gains",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "SafIns7.csv",
+				"container": "gains-project-container"
+			},
+			"columnDelimiter": ",",
+			"encodingName": "ISO-8859-11",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "Make Description",
+				"type": "String"
+			},
+			{
+				"name": "Family Description",
+				"type": "String"
+			},
+			{
+				"name": "Make Year Full",
+				"type": "String"
+			},
+			{
+				"name": "Release Month",
+				"type": "String"
+			},
+			{
+				"name": "Red Book Vehicle Key",
+				"type": "String"
+			},
+			{
+				"name": "VehicleType",
+				"type": "String"
+			},
+			{
+				"name": "Vehicle Description",
+				"type": "String"
+			},
+			{
+				"name": "Prop_7",
+				"type": "String"
+			},
+			{
+				"name": "Body Configuration Description",
+				"type": "String"
+			},
+			{
+				"name": "Badge Description",
+				"type": "String"
+			},
+			{
+				"name": "Secondary Badge Description",
+				"type": "String"
+			},
+			{
+				"name": "Engine Size",
+				"type": "String"
+			},
+			{
+				"name": "Engine Description",
+				"type": "String"
+			},
+			{
+				"name": "Cylinders",
+				"type": "String"
+			},
+			{
+				"name": "Induction Description",
+				"type": "String"
+			},
+			{
+				"name": "FuelDeliveryDesc",
+				"type": "String"
+			},
+			{
+				"name": "Method Delivery Description",
+				"type": "String"
+			},
+			{
+				"name": "Fuel Description17",
+				"type": "String"
+			},
+			{
+				"name": "Fuel Description18",
+				"type": "String"
+			},
+			{
+				"name": "Drive Description",
+				"type": "String"
+			},
+			{
+				"name": "Gear Type Description",
+				"type": "String"
+			},
+			{
+				"name": "Gear Number",
+				"type": "String"
+			},
+			{
+				"name": "Gear Location Description",
+				"type": "String"
+			},
+			{
+				"name": "Wheel Base",
+				"type": "String"
+			},
+			{
+				"name": "Door Number",
+				"type": "String"
+			},
+			{
+				"name": "Seat Capacity",
+				"type": "String"
+			},
+			{
+				"name": " New Price ",
+				"type": "String"
+			},
+			{
+				"name": " Average Wholesale ",
+				"type": "String"
+			},
+			{
+				"name": " Average Retail ",
+				"type": "String"
+			},
+			{
+				"name": " Good Wholesale ",
+				"type": "String"
+			},
+			{
+				"name": " Good Retail ",
+				"type": "String"
+			},
+			{
+				"name": " ทุนประกันต่ำสุด 80% ",
+				"type": "String"
+			},
+			{
+				"name": " ทุนประกันสูงสุด 120% ",
+				"type": "String"
+			},
+			{
+				"name": " Insurance Group ",
+				"type": "String"
+			},
+			{
+				"name": "GrossWeight",
+				"type": "String"
+			},
+			{
+				"name": "VIN",
+				"type": "String"
+			},
+			{
+				"name": "EngineNum",
+				"type": "String"
+			},
+			{
+				"name": "Thai Make Description",
+				"type": "String"
+			},
+			{
+				"name": "Thai Family Description",
+				"type": "String"
+			},
+			{
+				"name": "Thai Body Description",
+				"type": "String"
+			},
+			{
+				"name": "Thai Body Configuration Description",
+				"type": "String"
+			},
+			{
+				"name": "Thai Vehicle Type",
+				"type": "String"
+			},
+			{
+				"name": "Thai Vehicle Description",
+				"type": "String"
+			},
+			{
+				"name": "Air Conditioning Std Flag",
+				"type": "String"
+			},
+			{
+				"name": "Power Steering Std Flag",
+				"type": "String"
+			},
+			{
+				"name": "Electric Windows Std Flag",
+				"type": "String"
+			},
+			{
+				"name": "Group",
+				"type": "String"
+			},
+			{
+				"name": "NORMALCHARGEMINS",
+				"type": "String"
+			},
+			{
+				"name": "QUICKCHARGEMINS",
+				"type": "String"
+			},
+			{
+				"name": "QUICKCHARGEPERCENT",
+				"type": "String"
+			},
+			{
+				"name": "KMRANGE",
+				"type": "String"
+			},
+			{
+				"name": "TOPSPEED",
+				"type": "String"
+			},
+			{
+				"name": "COMBINEDPOWER",
+				"type": "String"
+			},
+			{
+				"name": "BATTERYWARRANTYYEARS53",
+				"type": "String"
+			},
+			{
+				"name": "BATTERYWARRANTYKM54",
+				"type": "String"
+			},
+			{
+				"name": "BATTERYWARRANTYYEARS55",
+				"type": "String"
+			},
+			{
+				"name": "BATTERYWARRANTYKM56",
+				"type": "String"
+			},
+			{
+				"name": "BATTERYWARRANTYYEARS57",
+				"type": "String"
+			},
+			{
+				"name": "BATTERYWARRANTYKM58",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

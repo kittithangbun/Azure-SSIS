@@ -1,0 +1,7 @@
+{
+	"name": "EDW-DEV-ADF01-SH01",
+	"properties": {
+		"type": "SelfHosted",
+		"description": "Development Self-Hosted Runtime"
+	}
+}

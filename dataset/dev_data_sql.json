@@ -1,0 +1,97 @@
+{
+	"name": "dev_data_sql",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlMI1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlMITable",
+		"schema": [
+			{
+				"name": "DATE_SID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "CAL_DATE",
+				"type": "date"
+			},
+			{
+				"name": "CAL_DDMMMYYYY",
+				"type": "varchar"
+			},
+			{
+				"name": "CAL_DDMMYYYY",
+				"type": "varchar"
+			},
+			{
+				"name": "CAL_DD",
+				"type": "varchar"
+			},
+			{
+				"name": "CAL_MONTH",
+				"type": "varchar"
+			},
+			{
+				"name": "CAL_MMM",
+				"type": "varchar"
+			},
+			{
+				"name": "CAL_MM",
+				"type": "varchar"
+			},
+			{
+				"name": "CAL_MMMYYYY",
+				"type": "varchar"
+			},
+			{
+				"name": "CAL_YYYY",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "CAL_YYYYMM",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "CAL_YYYYQQ",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "CAL_YYYYQN",
+				"type": "varchar"
+			},
+			{
+				"name": "CAL_DAY",
+				"type": "varchar"
+			},
+			{
+				"name": "CAL_DAY_ABR",
+				"type": "varchar"
+			},
+			{
+				"name": "CAL_QTR",
+				"type": "varchar"
+			},
+			{
+				"name": "CAL_WW",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "UPDATED_DATE",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "DIM_DATE"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

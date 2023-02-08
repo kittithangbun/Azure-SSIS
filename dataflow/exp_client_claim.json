@@ -1,0 +1,101 @@
+{
+	"name": "exp_client_claim",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"linkedService": {
+						"referenceName": "AzureSqlMI_PRD",
+						"type": "LinkedServiceReference"
+					},
+					"name": "azureMISource"
+				}
+			],
+			"sinks": [
+				{
+					"linkedService": {
+						"referenceName": "TM_Dev_blob_gains",
+						"type": "LinkedServiceReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "RedefineClientType"
+				},
+				{
+					"name": "AggregrateResult"
+				},
+				{
+					"name": "split1"
+				},
+				{
+					"name": "aggregate1"
+				},
+				{
+					"name": "aggregate2"
+				},
+				{
+					"name": "union1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          client_name as string,",
+				"          client_Type as string,",
+				"          SOURCE_TYPE as string,",
+				"          CONTRACT_TYPE as string,",
+				"          CT_RPT_GRP1 as string,",
+				"          claim_paid as decimal(38,2),",
+				"          claim_paid_af_vat as decimal(38,2),",
+				"          claim_count as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'query',",
+				"     store: 'sqlserver',",
+				"     query: 'select d_cli.client_name, d_cli.client_Type, d_claim.SOURCE_TYPE, d_rt.CONTRACT_TYPE, d_rt.CT_RPT_GRP1, \\n     sum(f_claim.GWRITTEN_CLAIM_PAID_BF_REC) claim_paid, \\n     sum(f_claim.GWRITTEN_CLAIM_PAID_BF_REC_AF_VAT) claim_paid_af_vat,\\n     count(distinct d_claim.claim_nbr) claim_count\\nfrom FCT_B_CLAIMS f_claim inner join\\n     DIM_RISK_TYPE d_rt on\\n          f_claim.RISK_TYPE_SID = d_rt.RISK_TYPE_SID inner join\\n     dim_claim d_claim on\\n          f_claim.claim_sid = d_claim.CLAIM_SID inner join\\n     dim_date d_uw_date on\\n          f_claim.UW_DATE_SID = d_uw_date.DATE_SID inner join\\n     dim_date d_ac_date on\\n          f_claim.AC_DATE_SID = d_ac_date.DATE_SID inner join\\n     dim_client d_cli on\\n          f_claim.client_sid = d_cli.client_sid\\nwhere d_uw_date.cal_yyyy = 2021 and\\n     d_ac_date.cal_yyyymm <= 202210 and\\n     isnull(f_claim.GWRITTEN_CLAIM_PAID_BF_REC,0) != 0\\ngroup by d_claim.SOURCE_TYPE, d_rt.CONTRACT_TYPE, d_rt.CT_RPT_GRP1, d_cli.client_name, d_cli.client_type',",
+				"     isolationLevel: 'READ_UNCOMMITTED') ~> azureMISource",
+				"split1@PS derive(Client_Type2 = iif(locate(\"บ.\", upper(client_name)) + locate(\"บริษัท\", upper(client_name)) + locate(\"LTD\", upper(client_name)) + locate(\"จำกัด\", upper(client_name)) + locate(\"THAILAND\", upper(client_name)) > 1,\"C\", \"P\")) ~> RedefineClientType",
+				"RedefineClientType aggregate(groupBy(SOURCE_TYPE,",
+				"          CLIENT_TYPE = Client_Type2,",
+				"          CONTRACT_TYPE,",
+				"          ct_rpt_grp1 = CT_RPT_GRP1),",
+				"     claim_paid = sum(claim_paid_af_vat),",
+				"          claim_count = sum(claim_count)) ~> AggregrateResult",
+				"azureMISource split(SOURCE_TYPE == \"PS\",",
+				"     SOURCE_TYPE == \"PA\",",
+				"     disjoint: false) ~> split1@(PS, PA, ELSE)",
+				"split1@PA aggregate(groupBy(SOURCE_TYPE,",
+				"          CLIENT_TYPE = client_Type,",
+				"          CONTRACT_TYPE,",
+				"          ct_rpt_grp1 = CT_RPT_GRP1),",
+				"     claim_paid = sum(claim_paid),",
+				"          claim_count = sum(claim_count)) ~> aggregate1",
+				"split1@ELSE aggregate(groupBy(SOURCE_TYPE,",
+				"          CLIENT_TYPE = client_Type,",
+				"          CONTRACT_TYPE,",
+				"          ct_rpt_grp1 = CT_RPT_GRP1),",
+				"     claim_paid = sum(claim_paid_af_vat),",
+				"          claim_count = sum(claim_count)) ~> aggregate2",
+				"AggregrateResult, aggregate1, aggregate2 union(byName: true,",
+				"     partitionBy('hash', 1))~> union1",
+				"union1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'delimited',",
+				"     container: 'gains-project-container',",
+				"     folderPath: 'test',",
+				"     columnDelimiter: '|',",
+				"     escapeChar: '\\\\',",
+				"     quoteChar: '\\\"',",
+				"     encodingName: 'WINDOWS-874',",
+				"     columnNamesAsHeader: true,",
+				"     filePattern:'ClientClaim[n]',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink1"
+			]
+		}
+	}
+}

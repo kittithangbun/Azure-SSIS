@@ -1,0 +1,14 @@
+{
+	"name": "EDW-DEV-ADF01",
+	"properties": {
+		"globalConfigurations": {
+			"PipelineBillingEnabled": "true"
+		}
+	},
+	"location": "southeastasia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "7dbd76ce-9801-4f3d-8c9d-3f37c887b29c",
+		"tenantId": "9e3320d5-0a75-4623-8d30-807c36031583"
+	}
+}

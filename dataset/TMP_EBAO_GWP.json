@@ -1,0 +1,95 @@
+{
+	"name": "TMP_EBAO_GWP",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PRD_AzureMI_tmsth_temp_rw",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "ebao"
+		},
+		"annotations": [],
+		"type": "AzureSqlMITable",
+		"schema": [
+			{
+				"name": "source_type",
+				"type": "varchar"
+			},
+			{
+				"name": "POLICYNBR_RENEW",
+				"type": "varchar"
+			},
+			{
+				"name": "TRAN_NBR",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "REN_CNT",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "END_CNT",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "risk_nbr",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "item_nbr",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "client_name",
+				"type": "varchar"
+			},
+			{
+				"name": "CONTRACT_TYPE",
+				"type": "varchar"
+			},
+			{
+				"name": "RISK_TYPE",
+				"type": "varchar"
+			},
+			{
+				"name": "INSURED_PERSON_ID",
+				"type": "varchar"
+			},
+			{
+				"name": "INSURED_PERSON_NAME",
+				"type": "varchar"
+			},
+			{
+				"name": "gwp",
+				"type": "decimal",
+				"precision": 22,
+				"scale": 2
+			},
+			{
+				"name": "CONTRACT_TYPE_GROUP",
+				"type": "varchar"
+			},
+			{
+				"name": "RN",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "total_GWP",
+				"type": "decimal",
+				"precision": 22,
+				"scale": 2
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "TMP_EBAO_POL_SOURCE"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

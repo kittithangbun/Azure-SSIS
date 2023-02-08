@@ -1,0 +1,68 @@
+{
+	"name": "DF_Claim_File",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "eboa_Claim_Data_File",
+						"type": "DatasetReference"
+					},
+					"name": "sqlMIQry"
+				}
+			],
+			"sinks": [
+				{
+					"linkedService": {
+						"referenceName": "Sftp1",
+						"type": "LinkedServiceReference"
+					},
+					"name": "ftpDest"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          first_master_policy as string,",
+				"          master_policy as string,",
+				"          risk_nbr as decimal(5,0),",
+				"          item_nbr as decimal(5,0),",
+				"          CONTRACT_TYPE as string,",
+				"          RISK_TYPE as string,",
+				"          INSURED_PERSON_ID as string,",
+				"          first_name as string,",
+				"          last_name as string,",
+				"          loss_ratio as decimal(38,6),",
+				"          date_open as date,",
+				"          date_closs as date,",
+				"          LOSS_DATE as date,",
+				"          claim_nbr as string,",
+				"          claim_count as integer,",
+				"          claim_incurred as decimal(38,2),",
+				"          CLAIM_TYPE_DESC as string,",
+				"          CLAIM_DESC2 as string,",
+				"          gwp as decimal(38,2),",
+				"          INSURED_PERSON_NAME as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'select prod.POLICYNBR_RENEW as first_master_policy, d_pol.policynbr_renew as master_policy ,prod.risk_nbr, prod.item_nbr,\\n     d_rt.CONTRACT_TYPE, d_rt.RISK_TYPE, isnull(d_insure.tax_id, d_insure.p_id) INSURED_PERSON_ID, d_insure.P_SURNAME first_name, d_insure.P_GIVEN_NAME last_name, \\n     (sum(f_claim.gwritten_claim)/prod.gwp) * 100 as loss_ratio, d_claim.REGISTRATION_DATE date_open, \\n     max(case when d_claim.CLAIM_STATUS in (\\'2\\',\\'F\\',\\'X\\') then d_ctx.TRX_APPROVE_DATE end)  date_closs, d_claim.LOSS_DATE, d_claim.claim_nbr,\\n     count(distinct f_claim.CLAIM_SID) as claim_count,\\n     sum(f_claim.GWRITTEN_CLAIM) claim_incurred, d_claim.CLAIM_TYPE_DESC, d_claim.CLAIM_DESC2, prod.gwp, d_rapa.INSURED_PERSON_NAME\\nfrom dim_risk_type d_rt inner join\\n     fct_b_claims f_claim on\\n          d_rt.RISK_TYPE_SID = f_claim.RISK_TYPE_SID inner join\\n     DIM_R_APA d_rapa on\\n          f_claim.R_APA_SID = d_rapa.R_APA_SID inner join\\n     dim_policy d_pol on\\n          f_claim.policy_sid = d_pol.policy_sid inner join\\n     dim_client d_cli on\\n          f_claim.CLIENT_SID = d_cli.CLIENT_SID inner join\\n     DIM_CLAIM d_claim on\\n          f_claim.claim_sid = d_claim.claim_sid inner join\\n               dim_date d_acdate on\\n          f_claim.AC_DATE_SID = d_acdate.date_sid inner join\\n     dim_claim_trx d_ctx on\\n          f_claim.CLAIM_TRX_SID = d_ctx.CLAIM_TRX_SID left outer join \\n     dim_client d_insure on\\n          f_claim.source_type = d_insure.SOURCE_TYPE and\\n          d_rapa.INSURED_PERSON_ID = d_insure.CLIENT_ID and\\n          d_insure.CURRENT_ROW_IND = \\'Current\\' left outer join\\n     (\\n          select policynbr_renew, risk_nbr, item_nbr, client_name, contract_type, risk_type, insured_person_id, insured_person_name, gwp, rn\\n          from (\\n               select prod_pol.policynbr_renew, prod_cli.client_name, prod_rapa.RISK_NBR, prod_rapa.ITEM_NBR, \\n                    prod_rt.CONTRACT_TYPE, prod_rt.RISK_TYPE, isnull(prod_insure.tax_id, prod_insure.p_id) INSURED_PERSON_ID, prod_rapa.INSURED_PERSON_NAME,\\n                    sum(f_prod.GROSS_WRITTEN_PREM) over(partition by isnull(prod_insure.tax_id, prod_insure.p_id), prod_rt.risk_type) gwp,\\n                    row_number() over(partition by isnull(prod_insure.tax_id, prod_insure.p_id), prod_rt.risk_type order by prod_pol.tran_nbr, prod_pol.ren_cnt, prod_pol.end_cnt) rn\\n               from dim_risk_type prod_rt inner join\\n                    fct_b_prod f_prod on\\n                         prod_rt.RISK_TYPE_SID = f_prod.RISK_TYPE_SID inner join\\n                    DIM_R_APA prod_rapa on\\n                         f_prod.R_APA_SID = prod_rapa.R_APA_SID inner join\\n                    dim_policy prod_pol on\\n                         f_prod.policy_sid = prod_pol.policy_sid inner join\\n                    dim_client prod_cli on\\n                         f_prod.CLIENT_SID = prod_cli.CLIENT_SID left outer join\\n                    dim_client prod_insure on\\n                         f_prod.SOURCE_TYPE = prod_insure.SOURCE_TYPE and\\n                         prod_rapa.INSURED_PERSON_ID = prod_insure.CLIENT_ID and\\n                         prod_insure.CURRENT_ROW_IND = \\'Current\\'\\n                    where prod_rt.RISK_TYPE in (\\'60\\',\\'64\\',\\'AAW\\',\\'ACW\\',\\'AHB\\') \\n               ) a\\n          where rn = 1\\n     ) prod on\\n          prod.INSURED_PERSON_ID = isnull(d_insure.tax_id, d_insure.p_id) and\\n          prod.CONTRACT_TYPE = d_rt.CONTRACT_TYPE and\\n          prod.RISK_TYPE = d_rt.RISK_TYPE\\n     where d_acdate.cal_yyyymm = 202201 and (\\n               d_rt.CONTRACT_TYPE in (\\'AAW\\',\\'ACW\\',\\'AHB\\') or\\n               -- TODO : PS plan to have these class on Jan 2023\\n               (d_rt.CONTRACT_TYPE in (\\'60\\') and d_rt.risk_type = \\'ACW\\') or\\n               (d_rt.CONTRACT_TYPE in (\\'64\\') and d_rt.risk_type in (\\'AAW\\',\\'AHB\\'))\\n          )\\n     group by d_pol.policynbr_renew, d_claim.claim_nbr, d_rt.CONTRACT_TYPE, d_rt.RISK_TYPE, d_rapa.INSURED_PERSON_ID, d_rapa.INSURED_PERSON_NAME ,\\n     isnull(d_insure.tax_id, d_insure.P_ID), prod.POLICYNBR_RENEW,prod.gwp, prod.rn, prod.risk_nbr, prod.item_nbr, d_insure.P_SURNAME, d_insure.P_GIVEN_NAME,\\n     d_claim.REGISTRATION_DATE, d_claim.LOSS_DATE, d_claim.CLAIM_TYPE_DESC, d_claim.CLAIM_DESC2, d_rapa.INSURED_PERSON_NAME',",
+				"     format: 'query') ~> sqlMIQry",
+				"sqlMIQry sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'delimited',",
+				"     folderPath: '/CLAIM/Monthly/',",
+				"     columnDelimiter: '|',",
+				"     escapeChar: '\\\\',",
+				"     quoteChar: '\\\"',",
+				"     columnNamesAsHeader: false,",
+				"     partitionFileNames:['CLAIM_OUT.txt'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> ftpDest"
+			]
+		}
+	}
+}

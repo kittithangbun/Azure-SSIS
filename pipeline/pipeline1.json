@@ -1,0 +1,35 @@
+{
+	"name": "pipeline1",
+	"properties": {
+		"activities": [
+			{
+				"name": "Execute SSIS package1",
+				"type": "ExecuteSSISPackage",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"packageLocation": {
+						"packagePath": "GIA/ProjectGIA-PS/stg_ps_syac_xmm045_r.dtsx",
+						"type": "SSISDB"
+					},
+					"environmentPath": "GIA/ProjectGIA",
+					"connectVia": {
+						"referenceName": "EDW-DEV-ADF01-IR01",
+						"type": "IntegrationRuntimeReference"
+					},
+					"loggingLevel": "Basic"
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2021-11-30T03:19:10Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

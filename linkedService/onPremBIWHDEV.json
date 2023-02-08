@@ -1,0 +1,16 @@
+{
+	"name": "onPremBIWHDEV",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "Oracle",
+		"typeProperties": {
+			"connectionString": "host=10.35.1.28;port=1521;servicename=BIDWH;user id=GIA_SMIC",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiIxMzQxNjljNi1kNDM4LTRmNWUtOTZiNC03NDAzYjc3ZmIwZmYiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "EDW-DEV-ADF01-SH01",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

@@ -1,0 +1,56 @@
+{
+	"name": "import_ost_claim",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"linkedService": {
+						"referenceName": "SqlServer1_gia_prod",
+						"type": "LinkedServiceReference"
+					},
+					"name": "EdwPROD"
+				}
+			],
+			"sinks": [
+				{
+					"linkedService": {
+						"referenceName": "SqlServer1_tmsth_prod",
+						"type": "LinkedServiceReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          claim_nbr as string,",
+				"          claimant_nbr as integer,",
+				"          claim_item_nbr as integer,",
+				"          CLAIM_STATUS as string,",
+				"          CLAIM_STATUS_DESC as string,",
+				"          GWRITTEN_OUT_CLAIM_AF_VAT as decimal(22,2)",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'query',",
+				"     store: 'sqlserver',",
+				"     query: 'select trx.claim_nbr, trx.claimant_nbr, itemps.claim_item_nbr,\\n        trx.CLAIM_STATUS,\\n        trx.CLAIM_STATUS_DESC,\\n        GWRITTEN_OUT_CLAIM_AF_VAT\\n    from FCT_B_CLAIMS a inner JOIN\\n        dim_date ac_date ON\\n            a.AC_DATE_SID = ac_date.DATE_SID inner JOIN\\n        DIM_CLAIM dc ON\\n            a.CLAIM_SID = dc.CLAIM_SID inner JOIN\\n        dim_claim_item_ps itemps on\\n            a.CLAIM_ITEM_PS_SID = itemps.CLAIM_ITEM_PS_SID inner JOIN\\n        DIM_CLAIM_TRX trx ON\\n            a.CLAIM_TRX_SID = trx.CLAIM_TRX_SID\\n    where a.source_type = \\'PS\\'',",
+				"     isolationLevel: 'READ_UNCOMMITTED') ~> EdwPROD",
+				"EdwPROD sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table',",
+				"     store: 'sqlserver',",
+				"     schemaName: 'dbo',",
+				"     tableName: 'TMSTH_CLAIM_OST',",
+				"     insertable: true,",
+				"     updateable: false,",
+				"     deletable: false,",
+				"     upsertable: false,",
+				"     truncate: true,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink1"
+			]
+		}
+	}
+}

@@ -1,0 +1,67 @@
+{
+	"name": "STG_PA_DESCPF",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlMI_stg_pa",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlMITable",
+		"schema": [
+			{
+				"name": "DESCPFX",
+				"type": "varchar"
+			},
+			{
+				"name": "DESCCOY",
+				"type": "varchar"
+			},
+			{
+				"name": "DESCTABL",
+				"type": "varchar"
+			},
+			{
+				"name": "DESCITEM",
+				"type": "varchar"
+			},
+			{
+				"name": "ITEMSEQ",
+				"type": "varchar"
+			},
+			{
+				"name": "LANGUAGE",
+				"type": "varchar"
+			},
+			{
+				"name": "TRANID",
+				"type": "varchar"
+			},
+			{
+				"name": "SHORTDESC",
+				"type": "varchar"
+			},
+			{
+				"name": "LONGDESC",
+				"type": "varchar"
+			},
+			{
+				"name": "USER_PROFILE",
+				"type": "varchar"
+			},
+			{
+				"name": "JOB_NAME",
+				"type": "varchar"
+			},
+			{
+				"name": "DATIME",
+				"type": "datetime2",
+				"scale": 7
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "PA_DESCPF"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

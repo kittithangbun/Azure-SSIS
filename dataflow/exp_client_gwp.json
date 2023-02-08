@@ -1,0 +1,100 @@
+{
+	"name": "exp_client_gwp",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"linkedService": {
+						"referenceName": "AzureSqlMI_PRD",
+						"type": "LinkedServiceReference"
+					},
+					"name": "azureMISource"
+				}
+			],
+			"sinks": [
+				{
+					"linkedService": {
+						"referenceName": "TM_Dev_blob_gains",
+						"type": "LinkedServiceReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "RedefineClientType"
+				},
+				{
+					"name": "AggregrateResult"
+				},
+				{
+					"name": "split1"
+				},
+				{
+					"name": "aggregate1"
+				},
+				{
+					"name": "aggregate2"
+				},
+				{
+					"name": "union1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          client_name as string,",
+				"          SOURCE_TYPE as string,",
+				"          CLIENT_TYPE as string,",
+				"          CONTRACT_TYPE as string,",
+				"          ct_rpt_grp1 as string,",
+				"          gross_written_prem as decimal(38,2),",
+				"          pol_count as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'query',",
+				"     store: 'sqlserver',",
+				"     query: 'select d_cli.client_name, f_prod.SOURCE_TYPE, d_cli.CLIENT_TYPE, d_rt.CONTRACT_TYPE, d_rt.ct_rpt_grp1,\\n     sum(f_prod.GROSS_WRITTEN_PREM) gross_written_prem,\\n     count(distinct case when d_pol.policy_count_flag = \\'Yes\\' and d_pol.policy_count = 1 then d_pol.policy_sid end) pol_count\\nfrom FCT_B_PROD f_prod inner join\\n     dim_date d_uwdate on f_prod.UW_DATE_SID = d_uwdate.DATE_SID inner join\\n     dim_date d_isdate on f_prod.ISSUE_DATE_SID = d_isdate.DATE_SID inner join\\n     dim_client d_cli on f_prod.CLIENT_SID = d_cli.CLIENT_SID inner join\\n     dim_risk_type d_rt on f_prod.RISK_TYPE_SID = d_rt.RISK_TYPE_SID inner join\\n     dim_policy d_pol on f_prod.POLICY_SID = d_pol.POLICY_SID\\nwhere d_uwdate.cal_yyyy = 2021 and\\n     d_isdate.cal_date <= \\'2022-10-31\\' --and\\n     --f_prod.SOURCE_TYPE = \\'PS\\'\\ngroup by f_prod.SOURCE_TYPE, d_cli.CLIENT_TYPE, d_cli.CLIENT_NAME, d_rt.CONTRACT_TYPE, d_rt.ct_rpt_grp1',",
+				"     isolationLevel: 'READ_UNCOMMITTED') ~> azureMISource",
+				"split1@PS derive(Client_Type2 = iif(locate(\"บ.\", upper(client_name)) + locate(\"บริษัท\", upper(client_name)) + locate(\"LTD\", upper(client_name)) + locate(\"จำกัด\", upper(client_name)) + locate(\"THAILAND\", upper(client_name)) > 1,\"C\", \"P\")) ~> RedefineClientType",
+				"RedefineClientType aggregate(groupBy(SOURCE_TYPE,",
+				"          CLIENT_TYPE = Client_Type2,",
+				"          CONTRACT_TYPE,",
+				"          ct_rpt_grp1),",
+				"     gross_written_prem = sum(gross_written_prem),",
+				"          pol_count = sum(pol_count)) ~> AggregrateResult",
+				"azureMISource split(SOURCE_TYPE == \"PS\",",
+				"     SOURCE_TYPE == \"PA\",",
+				"     disjoint: false) ~> split1@(PS, PA, ELSE)",
+				"split1@PA aggregate(groupBy(SOURCE_TYPE,",
+				"          CLIENT_TYPE,",
+				"          CONTRACT_TYPE,",
+				"          ct_rpt_grp1),",
+				"     gross_written_prem = sum(gross_written_prem),",
+				"          pol_count = sum(pol_count)) ~> aggregate1",
+				"split1@ELSE aggregate(groupBy(SOURCE_TYPE,",
+				"          CLIENT_TYPE,",
+				"          CONTRACT_TYPE,",
+				"          ct_rpt_grp1),",
+				"     gross_written_prem = sum(gross_written_prem),",
+				"          pol_count = sum(pol_count)) ~> aggregate2",
+				"AggregrateResult, aggregate1, aggregate2 union(byName: true,",
+				"     partitionBy('hash', 1))~> union1",
+				"union1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'delimited',",
+				"     container: 'gains-project-container',",
+				"     folderPath: 'test',",
+				"     columnDelimiter: '|',",
+				"     escapeChar: '\\\\',",
+				"     quoteChar: '\\\"',",
+				"     encodingName: 'WINDOWS-874',",
+				"     columnNamesAsHeader: true,",
+				"     filePattern:'ClientGWP[n]',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink1"
+			]
+		}
+	}
+}

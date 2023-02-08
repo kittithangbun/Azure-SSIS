@@ -1,0 +1,86 @@
+{
+	"name": "SourceDataset_12g",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlMI1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlMITable",
+		"schema": [
+			{
+				"name": "CLASS_SID",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 0
+			},
+			{
+				"name": "MAJOR_CLASS",
+				"type": "varchar"
+			},
+			{
+				"name": "SUB_CLASS",
+				"type": "varchar"
+			},
+			{
+				"name": "SUB_CLASS_EXT",
+				"type": "varchar"
+			},
+			{
+				"name": "RPT_GRP1",
+				"type": "varchar"
+			},
+			{
+				"name": "RPT_GRP2",
+				"type": "varchar"
+			},
+			{
+				"name": "RPT_GRP3",
+				"type": "varchar"
+			},
+			{
+				"name": "RPT_GRP4",
+				"type": "varchar"
+			},
+			{
+				"name": "RPT_GRP5",
+				"type": "varchar"
+			},
+			{
+				"name": "RPT_GRP6",
+				"type": "varchar"
+			},
+			{
+				"name": "RPT_GRP7",
+				"type": "varchar"
+			},
+			{
+				"name": "RPT_GRP8",
+				"type": "varchar"
+			},
+			{
+				"name": "RPT_GRP9",
+				"type": "varchar"
+			},
+			{
+				"name": "RPT_GRP10",
+				"type": "varchar"
+			},
+			{
+				"name": "SOURCE_TYPE",
+				"type": "varchar"
+			},
+			{
+				"name": "UPDATED_DATE",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "DIM_CLASS"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

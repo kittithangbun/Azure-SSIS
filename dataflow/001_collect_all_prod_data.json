@@ -1,0 +1,158 @@
+{
+	"name": "001_collect_all_prod_data",
+	"properties": {
+		"folder": {
+			"name": "EBao"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "PRD_Azure_read_only",
+						"type": "DatasetReference"
+					},
+					"name": "sqlMISource"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "TMP_EBAO_GWP",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "derivedColumn1",
+					"description": "Add derived column"
+				},
+				{
+					"name": "rn"
+				},
+				{
+					"name": "convert"
+				},
+				{
+					"name": "select1"
+				},
+				{
+					"name": "sumGWP"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          source_type as string,",
+				"          policynbr_renew as string,",
+				"          tran_nbr as decimal(5,0),",
+				"          ren_cnt as decimal(5,0),",
+				"          end_cnt as decimal(5,0),",
+				"          client_name as string,",
+				"          RISK_NBR as decimal(5,0),",
+				"          ITEM_NBR as decimal(5,0),",
+				"          CONTRACT_TYPE as string,",
+				"          RISK_TYPE as string,",
+				"          tax_id as string,",
+				"          p_id as string,",
+				"          INSURED_PERSON_NAME as string,",
+				"          gwp as decimal(22,2)",
+				"     ),",
+				"     allowSchemaDrift: false,",
+				"     validateSchema: true,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'select prod_pol.source_type, prod_pol.policynbr_renew, prod_pol.tran_nbr, prod_pol.ren_cnt, prod_pol.end_cnt, \\n        prod_cli.client_name, prod_rapa.RISK_NBR, prod_rapa.ITEM_NBR, prod_rt.CONTRACT_TYPE, prod_rt.RISK_TYPE,\\n        prod_insure.tax_id, prod_insure.p_id, prod_rapa.INSURED_PERSON_NAME, f_prod.GROSS_WRITTEN_PREM gwp\\nfrom dim_risk_type prod_rt inner join\\n    fct_b_prod f_prod on\\n            prod_rt.RISK_TYPE_SID = f_prod.RISK_TYPE_SID inner join\\n    DIM_R_APA prod_rapa on\\n            f_prod.R_APA_SID = prod_rapa.R_APA_SID inner join\\n    dim_policy prod_pol on\\n            f_prod.policy_sid = prod_pol.policy_sid inner join\\n    dim_client prod_cli on\\n            f_prod.CLIENT_SID = prod_cli.CLIENT_SID left outer join\\n    dim_client prod_insure on\\n            f_prod.SOURCE_TYPE = prod_insure.SOURCE_TYPE and\\n            prod_rapa.INSURED_PERSON_ID = prod_insure.CLIENT_ID and\\n            prod_insure.CURRENT_ROW_IND = \\'Current\\'\\n    where (\\n        prod_rt.CONTRACT_TYPE in (\\'AAW\\',\\'ACW\\',\\'AHB\\') or\\n        (\\n                prod_rt.CONTRACT_TYPE in (\\'60\\',\\'64\\') and\\n                prod_rt.risk_type in (\\'AAW\\',\\'ACW\\',\\'AHB\\')\\n        ) \\n    )',",
+				"     format: 'query') ~> sqlMISource",
+				"convert derive(INSURED_PERSON_ID = iifNull(p_id, tax_id),",
+				"          CONTRACT_TYPE_GROUP = iif(in(['AAW','ACW','AHB'], CONTRACT_TYPE), CONTRACT_TYPE, RISK_TYPE)) ~> derivedColumn1",
+				"sumGWP window(over(INSURED_PERSON_ID,",
+				"          CONTRACT_TYPE_GROUP),",
+				"     asc(source_type, true),",
+				"     asc(policynbr_renew, true),",
+				"     asc(ren_cnt, true),",
+				"     asc(ren_cnt, true),",
+				"     asc(end_cnt, true),",
+				"     RN = rowNumber()) ~> rn",
+				"sqlMISource cast(output(",
+				"          tran_nbr as integer,",
+				"          ren_cnt as integer,",
+				"          end_cnt as integer,",
+				"          RISK_NBR as integer,",
+				"          ITEM_NBR as integer",
+				"     ),",
+				"     errors: true) ~> convert",
+				"rn select(mapColumn(",
+				"          source_type,",
+				"          policynbr_renew,",
+				"          tran_nbr,",
+				"          ren_cnt,",
+				"          end_cnt,",
+				"          RISK_NBR,",
+				"          ITEM_NBR,",
+				"          client_name,",
+				"          CONTRACT_TYPE,",
+				"          RISK_TYPE,",
+				"          INSURED_PERSON_ID,",
+				"          INSURED_PERSON_NAME,",
+				"          gwp,",
+				"          CONTRACT_TYPE_GROUP,",
+				"          total_gwp,",
+				"          rn = RN",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"derivedColumn1 window(over(INSURED_PERSON_ID,",
+				"          CONTRACT_TYPE_GROUP),",
+				"     total_gwp = sum(gwp)) ~> sumGWP",
+				"select1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          source_type as string,",
+				"          POLICYNBR_RENEW as string,",
+				"          TRAN_NBR as integer,",
+				"          REN_CNT as integer,",
+				"          END_CNT as integer,",
+				"          risk_nbr as integer,",
+				"          item_nbr as integer,",
+				"          client_name as string,",
+				"          CONTRACT_TYPE as string,",
+				"          RISK_TYPE as string,",
+				"          INSURED_PERSON_ID as string,",
+				"          INSURED_PERSON_NAME as string,",
+				"          gwp as decimal(22,2),",
+				"          CONTRACT_TYPE_GROUP as string,",
+				"          RN as integer,",
+				"          total_GWP as decimal(22,2)",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     truncate:true,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          source_type,",
+				"          POLICYNBR_RENEW = policynbr_renew,",
+				"          TRAN_NBR = tran_nbr,",
+				"          REN_CNT = ren_cnt,",
+				"          END_CNT = end_cnt,",
+				"          risk_nbr = RISK_NBR,",
+				"          item_nbr = ITEM_NBR,",
+				"          client_name,",
+				"          CONTRACT_TYPE,",
+				"          RISK_TYPE,",
+				"          INSURED_PERSON_ID,",
+				"          INSURED_PERSON_NAME,",
+				"          gwp,",
+				"          CONTRACT_TYPE_GROUP,",
+				"          RN = total_gwp,",
+				"          total_GWP = rn",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}

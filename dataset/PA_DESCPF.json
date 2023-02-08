@@ -1,0 +1,16 @@
+{
+	"name": "PA_DESCPF",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "TVMACTDTA",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "OdbcTable",
+		"schema": [],
+		"typeProperties": {
+			"tableName": "\"TVMACTDTA\".\"DESCPF\""
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,21 @@
+{
+	"name": "TVMACTDTA",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "Odbc",
+		"typeProperties": {
+			"connectionString": {
+				"type": "SecureString",
+				"value": "**********"
+			},
+			"authenticationType": "Basic",
+			"userName": "BI2PA",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI4YTQwY2U0YS1jNDcyLTQxMTUtYjMxNi1iNTk3MzEwNmE0MmYiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "EDW-DEV-ADF01-SH01",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

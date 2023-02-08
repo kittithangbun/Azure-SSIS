@@ -1,0 +1,101 @@
+{
+	"name": "imp_mapping_brand",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "csv_mapping_brand_pa",
+						"type": "DatasetReference"
+					},
+					"name": "csvPA"
+				},
+				{
+					"dataset": {
+						"referenceName": "csv_mapping_brand_ps",
+						"type": "DatasetReference"
+					},
+					"name": "csvPS"
+				}
+			],
+			"sinks": [
+				{
+					"linkedService": {
+						"referenceName": "sql_tmsth_temp",
+						"type": "LinkedServiceReference"
+					},
+					"name": "DestPA"
+				},
+				{
+					"linkedService": {
+						"referenceName": "sql_tmsth_temp",
+						"type": "LinkedServiceReference"
+					},
+					"name": "DestPS"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          mm_code as string,",
+				"          brand as string,",
+				"          model as string,",
+				"          {Group Brand} as string,",
+				"          {Group Model} as string,",
+				"          {Car Segment} as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> csvPA",
+				"source(output(",
+				"          Mapping_original as string,",
+				"          Brand as string,",
+				"          Model as string,",
+				"          Group_brand as string,",
+				"          Group_model as string,",
+				"          Group_Brand_model as string,",
+				"          {Car segment} as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> csvPS",
+				"csvPA sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table',",
+				"     store: 'sqlserver',",
+				"     schemaName: 'dbo',",
+				"     tableName: 'tmp_map_brand_pa',",
+				"     insertable: true,",
+				"     updateable: false,",
+				"     deletable: false,",
+				"     upsertable: false,",
+				"     recreate: true,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> DestPA",
+				"csvPS sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table',",
+				"     store: 'sqlserver',",
+				"     schemaName: 'dbo',",
+				"     tableName: 'tmp_map_brand_PS',",
+				"     insertable: true,",
+				"     updateable: false,",
+				"     deletable: false,",
+				"     upsertable: false,",
+				"     recreate: true,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     mapColumn(",
+				"          Mapping_original,",
+				"          Brand,",
+				"          Model,",
+				"          Group_brand,",
+				"          Group_model,",
+				"          Group_Brand_model,",
+				"          Car_segment = {Car segment}",
+				"     )) ~> DestPS"
+			]
+		}
+	}
+}

@@ -1,0 +1,27 @@
+{
+	"name": "DestinationDataset_12g",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "DevAzureBlobStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "test_copy_data",
+				"container": "gains-project-container"
+			},
+			"columnDelimiter": "|",
+			"compressionCodec": "ZipDeflate",
+			"compressionLevel": "Optimal",
+			"encodingName": "ISO-8859-11",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

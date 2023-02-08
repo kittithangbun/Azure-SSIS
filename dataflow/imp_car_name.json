@@ -1,0 +1,56 @@
+{
+	"name": "imp_car_name",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "csv_car_name",
+						"type": "DatasetReference"
+					},
+					"name": "csvInput"
+				}
+			],
+			"sinks": [
+				{
+					"linkedService": {
+						"referenceName": "sql_tmsth_temp",
+						"type": "LinkedServiceReference"
+					},
+					"name": "tmsthDev"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          carname as string,",
+				"          car_brand_New as string,",
+				"          Model_new as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> csvInput",
+				"csvInput sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table',",
+				"     store: 'sqlserver',",
+				"     schemaName: 'dbo',",
+				"     tableName: 'tmp_car_name',",
+				"     insertable: true,",
+				"     updateable: false,",
+				"     deletable: false,",
+				"     upsertable: false,",
+				"     recreate: true,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     saveOrder: 1,",
+				"     mapColumn(",
+				"          carname,",
+				"          car_brand_New,",
+				"          Model_new",
+				"     )) ~> tmsthDev"
+			]
+		}
+	}
+}
